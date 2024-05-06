@@ -28,6 +28,9 @@ public class MedicionesTemperaturas
      * Agrega una nueva medicion de temperatura
      */
     public void agregarMedicion(float nuevaTemperatura) {
+        if (nuevaTemperatura<-273.15){
+            throw new IllegalArgumentException ("La temperatura no puede estar por debajo del cero absoluto");
+        }
         mediciones.add(nuevaTemperatura);
     }
     
@@ -48,7 +51,10 @@ public class MedicionesTemperaturas
      */
     public float promedioTemperaturas()
     {
-        assert mediciones.size() > 0: "debe haber al menos una temperatura cargada para calcular el promedio";
+        //assert mediciones.size() > 0: "debe haber al menos una temperatura cargada para calcular el promedio";
+        if (mediciones.size()==0){
+            throw new IllegalStateException ("La cantidad de mediciones debe ser mayor a 0 para esta operacion");
+        }
         float suma = 0;
         for (Float temp: mediciones) {
             suma = suma + temp;
@@ -59,7 +65,7 @@ public class MedicionesTemperaturas
     /**
      * Calcula cantidad de registros de temperaturas negativas (sub cero)
      */
-    public int cantidadRegistrosSubCero() {
+    public float cantidadRegistrosSubCero() {
         int negativas = 0;
         for (Float temp: mediciones) {
             if (temp < 0) {
@@ -68,4 +74,40 @@ public class MedicionesTemperaturas
         }
         return negativas;
     }
+
+    //Calcular temperaturas por encima de los 35 y por debajo de los -15
+    
+     public int temperaturaExtrema() {
+        int Extremas = 0;
+        for (Float temp: mediciones) {
+            if (temp<-15 && temp>35){
+                Extremas= Extremas + 1;
+            }
+        }
+        return Extremas;
+        }
+        
+    public int cantidadDeConsecutivas(){
+        int consecutivas = 0;
+        int cantConsecutivas=0;
+        float previa = 0;
+        for (Float temp: mediciones){
+        if (temp.equals(previa)){
+            consecutivas = consecutivas +1;
+            previa = temp;
+        }
+        else { 
+            previa = temp;
+    }
+    }
+        cantConsecutivas= cantConsecutivas + consecutivas;
+        return cantConsecutivas;
+    }
+
+    /**public int cantidadConsecutivas(){
+        int cantConsecutivas=0;
+        int consecutivas= consecutivas();
+        cantConsecutivas = cantConsecutivas + consecutivas;
+        return cantConsecutivas;/
+    }*/
 }
